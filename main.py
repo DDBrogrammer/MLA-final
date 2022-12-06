@@ -42,7 +42,6 @@ def encoding_cat(data, max_count_unique=5, msg=True):
 
 
 if __name__ == '__main__':
-
     for dirname, _, filenames in os.walk('/input'):
         for filename in filenames:
             print(os.path.join(dirname, filename))
@@ -67,21 +66,16 @@ if __name__ == '__main__':
     X = train.drop(['Unnamed: 0', 'id', 'satisfaction'], axis=1)
     X.head()
     X_train, X_val, y_train, y_val = train_test_split(X, y, test_size=0.2)
-    decision_tree = tree.DecisionTreeClassifier(criterion='entropy', max_depth=10, random_state=SEED)
+    decision_tree = tree.DecisionTreeClassifier(criterion='entropy', max_depth=100, random_state=SEED)
     decision_tree.fit(X_train, y_train)
-    DecisionTreeClassifier(criterion='entropy', max_depth=10, random_state=15)
+    DecisionTreeClassifier(criterion='entropy', max_depth=100, random_state=15)
     with open("tree1.dot", 'w') as f:
-        f = export_graphviz(decision_tree, out_file=f, max_depth=4,
+        f = export_graphviz(decision_tree, out_file=f, max_depth=4,#4
                             impurity=True, feature_names=X_train.columns,
                             rounded=True, filled=True)
-    check_call(['dot','-Tpng','tree1.dot','-o','tree.png'])
+    check_call(['dot', '-Tpng', 'tree1.dot', '-o', 'tree.png'])
     img = Image.open("tree.png")
     draw = ImageDraw.Draw(img)
     img.save('sample-out.png')
     PImage("sample-out.png")
     decision_tree.score(X_val, y_val)
-
-
-
-
-
